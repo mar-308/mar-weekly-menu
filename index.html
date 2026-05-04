@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Meal Plan · May 3–9</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300;1,9..144,500&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg:      #EEECEA;
@@ -13,7 +13,7 @@
       --mid:     #8A7260;
       --border:  rgba(30,18,8,0.09);
       --shadow:  0 2px 16px rgba(30,18,8,0.06);
-      --terra:   #D44E8A;
+      --terra:   #b48961;
       --sage:    #4E6E4A;
       --amber:   #B88030;
     }
@@ -23,45 +23,43 @@
     body {
       background: var(--bg);
       color: var(--dark);
-      font-family: 'DM Sans', sans-serif;
+      font-family: 'Outfit', sans-serif;
       -webkit-font-smoothing: antialiased;
     }
 
     /* ── HEADER ── */
     .site-header {
-      padding: 52px 24px 40px;
+      padding: 56px 24px 36px;
       max-width: 640px;
       margin: 0 auto;
       text-align: center;
       border-bottom: 1px solid var(--border);
     }
 
-    .week-chip {
-      display: inline-block;
-      font-size: 10px;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--mid);
-      background: rgba(30,18,8,0.07);
-      padding: 5px 14px;
-      border-radius: 100px;
-      margin-bottom: 20px;
-    }
-
     .site-header h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2.2rem, 8vw, 3.6rem);
-      font-weight: 700;
+      font-family: 'Fraunces', serif;
+      font-size: clamp(2.6rem, 10vw, 4rem);
+      font-optical-sizing: auto;
+      font-weight: 300;
       line-height: 1;
-      letter-spacing: -0.025em;
+      letter-spacing: -0.01em;
       color: var(--dark);
       white-space: nowrap;
     }
 
     .site-header h1 em {
       font-style: italic;
-      font-weight: 400;
+      font-weight: 300;
       color: var(--terra);
+    }
+
+    .week-sub {
+      margin-top: 10px;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--mid);
+      font-weight: 400;
     }
 
     /* ── LEGEND ── */
@@ -123,16 +121,16 @@
 
     .day-num {
       font-family: 'Playfair Display', serif;
-      font-size: 0.72rem;
+      font-size: 0.8 rem;
       color: var(--mid);
       letter-spacing: 0.1em;
       opacity: 0.8;
     }
 
     .day-name {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.85rem;
-      font-weight: 700;
+      font-family: 'Fraunces', serif;
+      font-size: 1.6rem;
+      font-weight: 550;
       letter-spacing: -0.02em;
       line-height: 1;
       color: var(--dark);
