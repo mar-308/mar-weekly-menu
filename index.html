@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meal Plan · May 3–9</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:      #EEECEA;
+      --card:    #FDFAF5;
+      --dark:    #1E1208;
+      --mid:     #8A7260;
+      --border:  rgba(30,18,8,0.09);
+      --shadow:  0 2px 16px rgba(30,18,8,0.06);
+      --terra:   #D44E8A;
+      --sage:    #4E6E4A;
+      --amber:   #B88030;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--dark);
+      font-family: 'DM Sans', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── HEADER ── */
+    .site-header {
+      padding: 52px 24px 40px;
+      max-width: 640px;
+      margin: 0 auto;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .week-chip {
+      display: inline-block;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--mid);
+      background: rgba(30,18,8,0.07);
+      padding: 5px 14px;
+      border-radius: 100px;
+      margin-bottom: 20px;
+    }
+
+    .site-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 8vw, 3.6rem);
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -0.025em;
+      color: var(--dark);
+      white-space: nowrap;
+    }
+
+    .site-header h1 em {
+      font-style: italic;
+      font-weight: 400;
+      color: var(--terra);
+    }
+
+    /* ── LEGEND ── */
+    .legend {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      padding: 18px 24px 0;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--mid);
+      letter-spacing: 0.04em;
+    }
+
+    .legend-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+    }
+    .legend-dot.b { background: var(--terra); }
+    .legend-dot.e { background: var(--sage); }
+    .legend-dot.s { background: var(--amber); }
+
+    /* ── CONTENT ── */
+    .content {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 0 20px 80px;
+    }
+
+    /* ── DAY SECTION ── */
+    .day-section {
+      padding-top: 40px;
+      opacity: 0;
+      transform: translateY(14px);
+      animation: up 0.5s ease forwards;
+    }
+
+    .day-section:nth-child(1) { animation-delay: 0.05s; }
+    .day-section:nth-child(2) { animation-delay: 0.13s; }
+    .day-section:nth-child(3) { animation-delay: 0.21s; }
+    .day-section:nth-child(4) { animation-delay: 0.29s; }
+
+    @keyframes up { to { opacity: 1; transform: none; } }
+
+    .day-header {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .day-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.72rem;
+      color: var(--mid);
+      letter-spacing: 0.1em;
+      opacity: 0.8;
+    }
+
+    .day-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.85rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      color: var(--dark);
+    }
+
+    /* ── MEAL LIST ── */
+    .meals-list {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      padding-bottom: 36px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .day-section:last-child .meals-list { border-bottom: none; }
+
+    /* ── MEAL CARD ── */
+    .meal-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .meal-toggle {
+      width: 100%;
+      min-height: 56px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 15px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-align: left;
+      -webkit-tap-highlight-color: transparent;
+      transition: background 0.15s;
+    }
+
+    .meal-toggle:active { background: rgba(30,18,8,0.03); }
+
+    .type-dot {
+      width: 9px; height: 9px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .type-dot.b { background: var(--terra); }
+    .type-dot.e { background: var(--sage); }
+    .type-dot.s { background: var(--amber); }
+
+    .meal-title {
+      flex: 1;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--dark);
+      line-height: 1.3;
+    }
+
+    .meal-badge {
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 100px;
+      flex-shrink: 0;
+      display: none;
+    }
+
+    @media (min-width: 400px) { .meal-badge { display: block; } }
+
+    .meal-badge.b { background: #FEEEE8; color: var(--terra); }
+    .meal-badge.e { background: #EBF2EA; color: var(--sage); }
+    .meal-badge.s { background: #FDF4E3; color: var(--amber); }
+
+    .chevron {
+      width: 17px; height: 17px;
+      color: var(--mid);
+      flex-shrink: 0;
+      transition: transform 0.3s ease;
+    }
+
+    .meal-item.open .chevron { transform: rotate(180deg); }
+
+    /* ── RECIPE PANEL ── */
+    .meal-recipe {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .meal-item.open .meal-recipe { max-height: 1000px; }
+
+    .recipe-inner {
+      border-top: 1px solid var(--border);
+      padding: 18px 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .recipe-block h4 {
+      font-size: 9.5px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 8px;
+    }
+
+    .recipe-block ul,
+    .recipe-block ol {
+      padding-left: 18px;
+    }
+
+    .recipe-block li {
+      font-size: 0.875rem;
+      line-height: 1.65;
+      color: var(--dark);
+      margin-bottom: 2px;
+    }
+
+    .recipe-block p {
+      font-size: 0.85rem;
+      color: var(--mid);
+      font-style: italic;
+      line-height: 1.55;
+    }
+
+    /* ── FOOTER ── */
+    .site-footer {
+      text-align: center;
+      padding: 20px 24px 36px;
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--mid);
+      opacity: 0.4;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="week-chip">May 3 – 9, 2026</div>
+    <h1>Meal <em>Plan.</em></h1>
+  </header>
+
+  <div class="legend">
+    <div class="legend-item"><span class="legend-dot b"></span> Breakfast</div>
+    <div class="legend-item"><span class="legend-dot e"></span> Entrée</div>
+    <div class="legend-item"><span class="legend-dot s"></span> Snack</div>
+  </div>
+
+  <div class="content">
+
+    <!-- ── MONDAY ── -->
+    <div class="day-section">
+      <div class="day-header">
+        <span class="day-num">01</span>
+        <h2 class="day-name">Monday</h2>
+      </div>
+      <div class="meals-list">
+
+        <div class="meal-item">
+          <button class="meal-toggle" onclick="toggleMeal(this)">
+            <span class="type-dot b"></span>
+            <span class="meal-title">Overnight Apple Chia Pudding</span>
+            <span class="meal-badge b">Breakfast</span>
+            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="meal-recipe"><div class="recipe-inner">
+            <div class="recipe-block">
+              <h4>Ingredients</h4>
+              <ul>
+                <li>½ cup natural yogurt</li>
+                <li>½ cup almond milk</li>
+                <li>1 apple</li>
+                <li>Cinnamon powder</li>
+              </ul>
+            </div>
+            <div class="recipe-block">
+              <h4>Steps</h4>
+              <ol>
+                <li>Mix all ingredients together</li>
+                <li>Refrigerate overnight</li>
+              </ol>
+            </div>
+          </div></div>
+        </div>
+
+        <div class="meal-item">
+          <button class="meal-toggle" onclick="toggleMeal(this)">
+            <span class="type-dot e"></span>
+            <span class="meal-title">Orange Chicken</span>
+            <span class="meal-badge e">Entrée</span>
+            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="meal-recipe"><div class="recipe-inner">
+            <div class="recipe-block">
+              <h4>Marinade</h4>
+              <ul>
+                <li>6 tbsp coconut aminos</li>
+                <li>6 tbsp fresh orange juice (~1 whole orange)</li>
+                <li>¾ tsp garlic powder</li>
+                <li>¼–½ tsp onion powder (optional)</li>
+                <li>Pinch of pepper or chili flakes (optional)</li>
+              </ul>
+            </div>
+            <div class="recipe-block">
+              <h4>Steps</h4>
+              <ol>
+                <li>Marinate chicken in orange juice mixture</li>
+                <li>Bake at 400°F (200°C) for 22–25 minutes</li>
+                <li>Cover with foil for the first 15 minutes to keep juicy</li>
+                <li>Optional: broil last 2–3 min for a golden glaze</li>
+              </ol>
+            </div>
+          </div></div>
+        </div>
+
+        <div class="meal-item">
+          <button class="meal-toggle" onclick="toggleMeal(this)">
+            <span class="type-dot s"></span>
+            <span class="meal-title">Avocado Tuna Cups</span>
+            <span class="meal-badge s">Snack</span>
+            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="meal-recipe"><div class="recipe-inner">
+            <div class="recipe-block">
+              <h4>Ingredients</h4>
+              <ul>
+                <li>1 can tuna in water</li>
+                <li>1 ripe avocado</li>
+                <li>1 lime</li>
+                <li>¼ red onion, finely diced</li>
+                <li>Garlic powder, salt, pepper</li>
+              </ul>
+            </div>
+            <div class="recipe-block">
+              <h4>Steps</h4>
+              <ol>
+                <li>Drain tuna and mix with onion, lime juice, garlic powder, salt &amp; pepper</li>
+                <li>Halve the avocado and remove the pit</li>
+                <li>Fill each avocado half with the tuna mix</li>
+                <li>Serve cold — no cooking needed</li>
+              </ol>
+            </div>
+          </div></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── TUESDAY ── -->
+    <div class="day-section">
+      <div class="day-header">
+        <span class="day-num">02</span>
+        <h2 class="day-name">Tuesday</h2>
+      </div>
+      <div class="meals-list">
+
+        <div class="meal-item">
+          <button class="meal-toggle" onclick="toggleMeal(this)">
+            <span class="type-dot b"></span>
+            <span class="meal-title">Overnight Oats</span>
+            <span class="meal-badge b">Breakfast</span>
+            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="meal-recipe"><div class="recipe-inner">
+            <div class="recipe-block">
+              <h4>Ingredients</h4>
+              <ul>
+                <li>1 cup almond milk</li>
+                <li>3 tbsp oats</li>
+                <li>3 tbsp chia seeds</li>
+                <li>Cinnamon powder</li>
+                <li>Vanilla</li>
+                <li>Splenda (1 packet)</li>
+              </ul>
+            </div>
+            <div class="recipe-block">
+              <h4>Steps</h4>
+              <ol>
+                <li>Mix all ingredients together</li>
+                <li>Refrigerate overnight</li>
+              </ol>
+            </div>
+          </div></div>
+        </div>
+
+        <div class="meal-item">
+          <button class="meal-toggle" onclick="toggleMeal(this)">
+            <span class="type-dot e"></span>
+            <span class="meal-title">Crispy Chicken</span>
+            <span class="meal-badge e">Entrée</span>
+            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="meal-recipe"><div class="recipe-inner">
+            <div class="recipe-block">
+              <h4>Ingredients</h4>
+              <ul>
+                <li>Chicken</li>
+                <li>1 egg</li>
+                <li>Oatmeal</li>
+                <li>Salt, pepper, garlic powder</li>
+              </ul>
+            </div>
+            <div class="recipe-block">
+              <h4>Steps</h4>
+              <ol>
+                <li>Mix egg with oatmeal, salt, pepper &amp; garlic powder</li>
+                <li>Dip chicken in the mixture</li>
+                <li>Air fry at 375°F (190°C) for 12–15 min, flipping halfway</li>
+                <li>Check that internal temp reaches 165°F (74°C)</li>
+              </ol>
+            </div>
+            <div class="recipe-block">
+              <h4>Suggested Sides</h4>
+              <p>Mushrooms + ¾ cup potatoes in the air fryer with rosemary, olive oil &amp; garlic powder (~15 min)</p>
+            </div>
+          </div></div>
+        </div>
+
+        <div class="meal-item">
+          <button class="meal-toggle" onclick="toggleMeal(this)">
+            <span class="type-dot s"></span>
+            <span class="meal-title">Crispy Chicken Sandwich</span>
+            <span class="meal-badge s">Snack</span>
+            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="meal-recipe"><div class="recipe-inner">
+            <div class="recipe-block">
+              <h4>Ingredients</h4>
+              <ul>
+                <li>Wrap</li>
+                <li>Tomato sauce</li>
+                <li>Bell pepper, spinach, mushrooms</li>
+                <li>Leftover crispy chicken from lunch</li>
+              </ul>
+            </div>
+            <div class="recipe-block">
+              <h4>Steps</h4>
+              <ol>
+                <li>Assemble wrap with sauce, veggies &amp; leftover chicken</li>
+                <li>Heat in a small oven or pan with lid</li>
+              </ol>
+            </div>
+          </div></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── WEDNESDAY ── -->
+    <div class="day-section">
+      <div class="day-header">
+        <span class="day-num">03</span>
+        <h2 class="day-name">Wednesday</h2>
+      </div>
+      <div class="meals-list">
+
+        <div class="meal-item">
+          <button class="meal-toggle" onclick="toggleMeal(this)">
+            <span class="type-dot b"></span>
+            <span class="meal-title">Chia Pudding</span>
+            <span class="meal-badge b">Breakfast</span>
+            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="meal-recipe"><div class="recipe-inner">
+            <div class="recipe-block">
+              <h4>Ingredients</h4>
+              <ul>
+                <li>1 cup almond milk</li>
+                <li>1 tsp cacao powder</li>
+                <li>¼ cup chia seeds</li>
+                <li>Cinnamon</li>
+                <li>Stevia</li>
+              </ul>
+            </div>
+            <div class="recipe-block">
+              <h4>Steps</h4>
+              <ol>
+                <li>Mix all ingredients together</li>
+                <li>Refrigerate overnight</li>
+              </ol>
+            </div>
+          </div></div>
+        </div>
+
+        <div class="meal-item">
+          <button class="meal-toggle" onclick="toggleMeal(this)">
+            <span class="type-dot e"></span>
+            <span class="meal-title">Instant Pot Stew</span>
+            <span class="meal-badge e">Entrée</span>
+            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="meal-recipe"><div class="recipe-inner">
+            <div class="recipe-block">
+              <h4>Ingredients</h4>
+              <ul>
+                <li>Flank steak</li>
+                <li>Bell pepper</li>
+                <li>Onion</li>
+                <li>Tomato</li>
+                <li>Potatoes</li>
+                <li>Paprika, salt, pepper</li>
+              </ul>
+            </div>
+            <div class="recipe-block">
+              <h4>Steps</h4>
+              <ol>
+                <li>Cut meat into large cubes; season with paprika, salt &amp; pepper</li>
+                <li>Layer in Instant Pot: onion rounds → diced tomato → meat → pepper strips</li>
+                <li>Add ~2 cups water</li>
+                <li>Cook on high pressure for 30 minutes</li>
+              </ol>
+            </div>
+          </div></div>
+        </div>
+
+        <div class="meal-item">
+          <button class="meal-toggle" onclick="toggleMeal(this)">
+            <span class="type-dot s"></span>
+            <span class="meal-title">Hard Boiled Eggs</span>
+            <span class="meal-badge s">Snack</span>
+            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="meal-recipe"><div class="recipe-inner">
+            <div class="recipe-block">
+              <h4>Steps</h4>
+              <ol>
+                <li>Place eggs in a pot and cover with cold water</li>
+                <li>Bring to a boil, then reduce heat and simmer 10–12 min</li>
+                <li>Transfer to an ice bath, cool, then peel</li>
+              </ol>
+            </div>
+          </div></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── THURSDAY ── -->
+    <div class="day-section">
+      <div class="day-header">
+        <span class="day-num">04</span>
+        <h2 class="day-name">Thursday</h2>
+      </div>
+      <div class="meals-list">
+
+        <div class="meal-item">
+          <button class="meal-toggle" onclick="toggleMeal(this)">
+            <span class="type-dot e"></span>
+            <span class="meal-title">Steak and Veggies</span>
+            <span class="meal-badge e">Entrée</span>
+            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="meal-recipe"><div class="recipe-inner">
+            <div class="recipe-block">
+              <h4>Ingredients</h4>
+              <ul>
+                <li>6 oz steak</li>
+                <li>Onion</li>
+                <li>Tomato</li>
+                <li>Garlic powder</li>
+                <li>Soy sauce &amp; oil</li>
+              </ul>
+            </div>
+            <div class="recipe-block">
+              <h4>Steps</h4>
+              <ol>
+                <li>Toss steak strips with soy sauce, garlic powder &amp; oil — marinate 15+ min</li>
+                <li>Air fry steak at 400°F (200°C) for 6–8 min, shaking halfway</li>
+                <li>Add sliced onions &amp; tomatoes, air fry at 380°F for 3–4 min</li>
+                <li>Toss everything together and serve (Peruvian lomo saltado style)</li>
+              </ol>
+            </div>
+          </div></div>
+        </div>
+
+        <div class="meal-item">
+          <button class="meal-toggle" onclick="toggleMeal(this)">
+            <span class="type-dot s"></span>
+            <span class="meal-title">Avocado Tuna Cups</span>
+            <span class="meal-badge s">Snack</span>
+            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="meal-recipe"><div class="recipe-inner">
+            <div class="recipe-block">
+              <h4>Ingredients</h4>
+              <ul>
+                <li>1 can tuna in water</li>
+                <li>1 ripe avocado</li>
+                <li>1 lime</li>
+                <li>¼ red onion, finely diced</li>
+                <li>Garlic powder, salt, pepper</li>
+              </ul>
+            </div>
+            <div class="recipe-block">
+              <h4>Steps</h4>
+              <ol>
+                <li>Drain tuna and mix with onion, lime juice, garlic powder, salt &amp; pepper</li>
+                <li>Halve the avocado and remove the pit</li>
+                <li>Fill each avocado half with the tuna mix</li>
+                <li>Serve cold — no cooking needed</li>
+              </ol>
+            </div>
+          </div></div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <footer class="site-footer">Meal Plan · May 2026 · from Notion</footer>
+
+  <script>
+    function toggleMeal(btn) {
+      const item = btn.closest('.meal-item');
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.meal-item.open').forEach(el => el.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    }
+  </script>
+
+</body>
+</html>
